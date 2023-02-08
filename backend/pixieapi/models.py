@@ -13,7 +13,7 @@ class Genre(models.Model):
 
 
 class Movie(models.Model):
-    title = models.CharField(max_length=120, blank=False)
+    title = models.CharField(max_length=120, blank=False, unique=True)
     genres = models.ManyToManyField(Genre)
     added = models.DateTimeField(default=timezone.now, blank=False)
     viewed = models.BooleanField(default=False)
