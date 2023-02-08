@@ -12,7 +12,7 @@ Pixie is an online list creator and picker service. By default, it tracks movies
    1. Sample localhost contents below
 4. Run `docker-compose up`
    1. View backend at http://localhost:8000
-5. cd /frontend/
+5. In New Terminal: `cd /frontend/`
 6. Run command `npm install`
 7. Run command `npm dev`
    1. View frontend at http://localhost:3000
