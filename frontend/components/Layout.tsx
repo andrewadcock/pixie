@@ -5,7 +5,7 @@ interface Props {
   children: JSX.Element;
 }
 
-export default function Layout(props: Props) {
+function Layout(props: Props) {
   const { children } = props;
 
   return (
@@ -16,3 +16,5 @@ export default function Layout(props: Props) {
     </div>
   );
 }
+
+export default Layout;
