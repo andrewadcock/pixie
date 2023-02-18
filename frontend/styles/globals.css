@@ -95,9 +95,14 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-a {
-  color: inherit;
+a,
+a:visited {
+  color: deeppink;
   text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 @media (prefers-color-scheme: dark) {

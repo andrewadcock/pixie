@@ -47,7 +47,7 @@ function Login() {
           <Button variant={"contained"}>Login</Button>
         </form>
         <div>
-          Don't have an account?<Link href="account/register"> Sign Up</Link>
+          Don't have an account? <Link href="/account/register">Sign Up</Link>
         </div>
         {username}
         {password}
