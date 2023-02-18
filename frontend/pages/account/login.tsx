@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Button,
   Checkbox,
+  FormControl,
   FormControlLabel,
   FormGroup,
   TextField,
@@ -15,13 +16,21 @@ function Login() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("email", email);
+    console.log("password", password);
+  };
+
+  const handleLoginViaEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleLogin(e);
+    }
   };
 
   return (
     <div>
       <h3>Login</h3>
       <div>
-        <form>
+        <FormControl tabIndex={0} onKeyUp={handleLoginViaEnter}>
           <TextField
             label={"email"}
             variant={"outlined"}
@@ -51,7 +60,7 @@ function Login() {
           <Button variant={"contained"} onClick={handleLogin}>
             Login
           </Button>
-        </form>
+        </FormControl>
         <div>
           Don't have an account? <Link href="/account/register">Sign Up</Link>
         </div>

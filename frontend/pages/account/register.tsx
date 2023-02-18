@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Checkbox,
@@ -6,7 +6,6 @@ import {
   FormGroup,
   TextField,
 } from "@mui/material";
-import Link from "next/link";
 import {
   passwordRules,
   validateEmail,
@@ -33,6 +32,21 @@ function Register() {
     );
 
     setEmail(email);
+  };
+
+  const isFormValid = () => {
+    if (
+      firstName === "" ||
+      lastName === "" ||
+      email === "" ||
+      password === "" ||
+      errorPassword !== "" ||
+      errorEmail !== ""
+    ) {
+      return false;
+    }
+
+    return true;
   };
 
   return (
@@ -84,23 +98,13 @@ function Register() {
             }
           />
 
-          <Button
-            variant={"contained"}
-            disabled={
-              firstName === "" ||
-              lastName === "" ||
-              errorPassword !== "" ||
-              password === "" ||
-              errorEmail !== "" ||
-              email !== ""
-            }
-          >
+          <Button variant={"contained"} disabled={!isFormValid()}>
             Create Account
           </Button>
         </FormGroup>
-        {password}
       </div>
     </div>
   );
 }
+
 export default Register;
