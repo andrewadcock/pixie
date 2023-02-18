@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import {
   Button,
   Checkbox,
+  FormControl,
   FormControlLabel,
-  FormGroup,
   TextField,
 } from "@mui/material";
 import {
@@ -49,11 +49,21 @@ function Register() {
     return true;
   };
 
+  const handleLoginViaEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleRegistration(e);
+    }
+  };
+
+  const handleRegistration = (e: React.FormEvent) => {
+    console.log("Registration");
+  };
+
   return (
     <div>
       <h3>Register</h3>
       <div>
-        <FormGroup>
+        <FormControl tabIndex={0} onKeyUp={handleLoginViaEnter}>
           <TextField
             label={"First Name"}
             variant={"outlined"}
@@ -98,10 +108,14 @@ function Register() {
             }
           />
 
-          <Button variant={"contained"} disabled={!isFormValid()}>
+          <Button
+            variant={"contained"}
+            disabled={!isFormValid()}
+            onSubmit={handleRegistration}
+          >
             Create Account
           </Button>
-        </FormGroup>
+        </FormControl>
       </div>
     </div>
   );
