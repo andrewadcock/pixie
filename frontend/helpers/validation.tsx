@@ -37,12 +37,3 @@ export function validateEmail(email: string) {
 
   return email.match(emailRegex);
 }
-
-export function validateUsername(username: string) {
-  // TODO: Check if username is valid and unused
-  const randomNumber = Math.floor(Math.random() * 4);
-  if (randomNumber === 1) {
-    return "Username already exists";
-  }
-  return "";
-}

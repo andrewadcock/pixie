@@ -9,9 +9,13 @@ import {
 import Link from "next/link";
 
 function Login() {
-  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+  };
 
   return (
     <div>
@@ -19,12 +23,12 @@ function Login() {
       <div>
         <form>
           <TextField
-            label={"username"}
+            label={"email"}
             variant={"outlined"}
-            value={username}
+            value={email}
             onChange={(
               e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-            ) => setUsername(e.target.value)}
+            ) => setEmail(e.target.value)}
           />
           <TextField
             label={"password"}
@@ -44,13 +48,13 @@ function Login() {
               }
             />
           </FormGroup>
-          <Button variant={"contained"}>Login</Button>
+          <Button variant={"contained"} onClick={handleLogin}>
+            Login
+          </Button>
         </form>
         <div>
           Don't have an account? <Link href="/account/register">Sign Up</Link>
         </div>
-        {username}
-        {password}
       </div>
     </div>
   );

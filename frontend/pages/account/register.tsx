@@ -11,19 +11,16 @@ import {
   passwordRules,
   validateEmail,
   validatePassword,
-  validateUsername,
 } from "@/helpers/validation";
 
 function Register() {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [errorEmail, setErrorEmail] = useState<string>("");
   const [errorPassword, setErrorPassword] = useState<string>("");
-  const [errorUsername, setErrorUsername] = useState<string>("");
 
   const handlePassword = (password: string) => {
     setErrorPassword(validatePassword(password));
@@ -36,11 +33,6 @@ function Register() {
     );
 
     setEmail(email);
-  };
-
-  const handleUsername = (username: string) => {
-    setErrorUsername(validateUsername(username));
-    setUsername(username);
   };
 
   return (
@@ -72,15 +64,6 @@ function Register() {
               e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
             ) => handleEmail(e.target.value)}
           />
-          {errorUsername}
-          <TextField
-            label={"username"}
-            variant={"outlined"}
-            value={username}
-            onChange={(
-              e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-            ) => handleUsername(e.target.value)}
-          />
           {passwordRules()}
           {errorPassword}
           <TextField
@@ -106,8 +89,6 @@ function Register() {
             disabled={
               firstName === "" ||
               lastName === "" ||
-              errorUsername !== "" ||
-              username === "" ||
               errorPassword !== "" ||
               password === "" ||
               errorEmail !== "" ||
@@ -117,7 +98,6 @@ function Register() {
             Create Account
           </Button>
         </FormGroup>
-        {username}
         {password}
       </div>
     </div>
