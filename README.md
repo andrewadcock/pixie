@@ -10,11 +10,13 @@ Pixie is an online list creator and picker service. By default, it tracks movies
       1. Change `SECRET_KEY`
 3. Create /db/.env
    1. Sample localhost contents below
-4. Run `docker-compose up`
+4. Create /frontend/.env
+   1. Sample file context below
+5. Run `docker-compose up`
    1. View backend at http://localhost:8000
-5. In New Terminal: `cd /frontend/`
-6. Run command `npm install`
-7. Run command `npm dev`
+6. In New Terminal: `cd /frontend/`
+7. Run command `npm install`
+8. Run command `npm dev`
    1. View frontend at http://localhost:3000
 
 ### /backend/.env
@@ -36,4 +38,9 @@ DATABASE_URL=postgres://
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=postgres
+```
+
+### /fronted/.env
+```dotenv
+APIURL=http://localhost:8000/
 ```
