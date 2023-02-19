@@ -112,6 +112,7 @@ function Register() {
             variant={"contained"}
             disabled={!isFormValid()}
             onSubmit={handleRegistration}
+            type={"submit"}
           >
             Create Account
           </Button>

@@ -57,7 +57,7 @@ function Login() {
               }
             />
           </FormGroup>
-          <Button variant={"contained"} onClick={handleLogin}>
+          <Button variant={"contained"} onClick={handleLogin} type={"submit"}>
             Login
           </Button>
         </FormControl>
