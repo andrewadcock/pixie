@@ -6,18 +6,15 @@ from .models import Movie
 
 
 class ListMovie(generics.ListAPIView):
-    permission_classes = (IsAuthenticated,)
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
 
 class CreateMovie(generics.CreateAPIView):
-    permission_classes = (IsAuthenticated,)
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
 
 class UpdateMovie(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
