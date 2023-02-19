@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Button,
   Checkbox,
@@ -8,16 +8,18 @@ import {
   TextField,
 } from "@mui/material";
 import Link from "next/link";
+import UserContext from "@/context/authentication";
 
 function Login() {
+  const { login } = useContext(UserContext);
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("email", email);
-    console.log("password", password);
+    login({ email, password });
   };
 
   const handleLoginViaEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
