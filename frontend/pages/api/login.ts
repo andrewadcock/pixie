@@ -1,10 +1,16 @@
 import axios from "axios";
+import { NextApiRequest, NextApiResponse } from "next";
 
-const LoginApi = async (req: any, res: any) => {
+type Data = {
+  message?: string;
+  data?: string;
+};
+
+const LoginApi = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   let accessToken = null;
 
   if (req.method === "POST") {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
     const config = {
       headers: {
@@ -14,16 +20,19 @@ const LoginApi = async (req: any, res: any) => {
     };
 
     const body = {
-      email,
+      username,
       password,
     };
 
-    const data = await axios.post(
-      `${process.env.APIURL}/api/token`,
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/api-token-auth/`,
       body,
       config
     );
-    console.log("data", data);
+
+    if (data) {
+      res.status(200).json({ data });
+    }
   } else {
     res.setHeader("Allow", ["POST"]);
     res.status(405).json({ message: `Method ${req.method} is not allowed` });

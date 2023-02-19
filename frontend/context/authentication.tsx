@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import LoginApi from "@/pages/api/login";
 
 interface UserProviderProps {
   children: any;
@@ -30,8 +31,24 @@ export const UserProvider = (props: UserProviderProps) => {
 
   const login = async (props: LoginProps) => {
     const { email, password } = props;
-    console.log("email in login UserProvider", email);
-    console.log("password", password);
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    };
+
+    const body = {
+      username: email,
+      password,
+    };
+
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_LOCAL_URL}api/login`,
+      body,
+      config
+    );
+    console.log("data", data);
   };
 
   return (

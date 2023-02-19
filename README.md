@@ -42,5 +42,6 @@ POSTGRES_DB=postgres
 
 ### /fronted/.env
 ```dotenv
-APIURL=http://localhost:8000/
+NEXT_PUBLIC_API_URL = 'http://localhost:8000/'
+NEXT_PUBLIC_LOCAL_URL = 'http://localhost:3000/'
 ```
