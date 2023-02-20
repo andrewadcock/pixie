@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import LoginApi from "@/pages/api/login";
 
@@ -13,7 +13,7 @@ interface LoginProps {
 }
 
 const defaultUserContext = {
-  email: "",
+  user: {},
   accessToken: "",
   error: "",
   login: (props: LoginProps) => new Promise(() => {}),
@@ -23,7 +23,7 @@ const UserContext = createContext(defaultUserContext);
 
 export const UserProvider = (props: UserProviderProps) => {
   const { children } = props;
-  const [email, setEmail] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
   const [accessToken, setAccessToken] = useState<any>(null);
   const [error, setError] = useState<any>(null);
 
@@ -43,16 +43,35 @@ export const UserProvider = (props: UserProviderProps) => {
       password,
     };
 
-    const { data } = await axios.post(
-      `${process.env.NEXT_PUBLIC_LOCAL_URL}api/login`,
-      body,
-      config
-    );
-    console.log("data", data);
+    try {
+      const { data: accessResponse } = await axios.post(
+        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/login`,
+        body,
+        config
+      );
+
+      console.log("accessResponse", accessResponse);
+
+      if (accessResponse && accessResponse.user) {
+        setUser(accessResponse.user);
+      }
+      if (accessResponse && accessResponse.access) {
+        setAccessToken(accessResponse.access);
+      }
+
+      await router.push("/");
+    } catch (error: Error | AxiosError) {
+      if (error.response && error.response.data) {
+        setError(error.response.data.message);
+        return;
+      }
+      console.error("Error: ", error.message);
+      setError("Something went wrong.");
+    }
   };
 
   return (
-    <UserContext.Provider value={{ email, accessToken, error, login }}>
+    <UserContext.Provider value={{ user, accessToken, error, login }}>
       {children}
     </UserContext.Provider>
   );
