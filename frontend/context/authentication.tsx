@@ -12,6 +12,20 @@ interface LoginProps {
   password: string;
 }
 
+export interface IUser {
+  first_name: string;
+  last_name: string;
+  pk: string;
+  email: string;
+}
+
+interface UserContext {
+  user: IUser | {};
+  accessToken: string;
+  error: string;
+  login: any;
+}
+
 const defaultUserContext = {
   user: {},
   accessToken: "",
@@ -19,13 +33,14 @@ const defaultUserContext = {
   login: (props: LoginProps) => new Promise(() => {}),
 };
 
-const UserContext = createContext(defaultUserContext);
+// const UserContext = createContext(defaultUserContext);
+const UserContext = createContext<UserContext>(defaultUserContext);
 
 export const UserProvider = (props: UserProviderProps) => {
   const { children } = props;
-  const [user, setUser] = useState<any>(null);
-  const [accessToken, setAccessToken] = useState<any>(null);
-  const [error, setError] = useState<any>(null);
+  const [user, setUser] = useState<IUser | {}>({});
+  const [accessToken, setAccessToken] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const router = useRouter();
 
@@ -53,14 +68,14 @@ export const UserProvider = (props: UserProviderProps) => {
       console.log("accessResponse", accessResponse);
 
       if (accessResponse && accessResponse.user) {
-        setUser(accessResponse.user);
+        setUser(accessResponse.user[0]);
       }
       if (accessResponse && accessResponse.access) {
         setAccessToken(accessResponse.access);
       }
 
       await router.push("/");
-    } catch (error: Error | AxiosError) {
+    } catch (error: any) {
       if (error.response && error.response.data) {
         setError(error.response.data.message);
         return;
