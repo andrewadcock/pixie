@@ -1,7 +1,7 @@
-from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.models import User
 from django.shortcuts import render
-from rest_framework import generics
-from .serializers import MovieSerializer
+from rest_framework import generics, permissions, viewsets
+from .serializers import MovieSerializer, UserSerializer
 from .models import Movie
 
 
@@ -18,3 +18,9 @@ class CreateMovie(generics.CreateAPIView):
 class UpdateMovie(generics.RetrieveUpdateDestroyAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+
+
+class UserViewSet(generics.ListAPIView):
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
