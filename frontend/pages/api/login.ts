@@ -27,7 +27,7 @@ const LoginApi = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     };
 
     const { data: accessToken } = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}api/v1/api-token-auth/`,
+      `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/api-token-auth/`,
       body,
       config
     );
@@ -40,7 +40,7 @@ const LoginApi = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       };
 
       const { data: userData } = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}api/v1/user/`,
+        `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/user/`,
         userConfig
       );
 

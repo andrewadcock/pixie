@@ -44,4 +44,5 @@ POSTGRES_DB=postgres
 ```dotenv
 NEXT_PUBLIC_API_URL = 'http://localhost:8000/'
 NEXT_PUBLIC_LOCAL_URL = 'http://localhost:3000/'
+NEXT_PUBLIC_API_VERSION = 'v1'
 ```

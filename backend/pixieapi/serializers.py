@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Movie, Genre
 
@@ -13,9 +12,3 @@ class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         field = ('id', 'name')
-
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username', 'email']
