@@ -13,13 +13,13 @@ import UserContext from "@/context/authentication";
 function Login() {
   const { login } = useContext(UserContext);
 
-  const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    login({ email, password });
+    login({ username, password });
   };
 
   const handleLoginViaEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -34,12 +34,12 @@ function Login() {
       <div>
         <FormControl tabIndex={0} onKeyUp={handleLoginViaEnter}>
           <TextField
-            label={"email"}
+            label={"Username"}
             variant={"outlined"}
-            value={email}
+            value={username}
             onChange={(
               e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-            ) => setEmail(e.target.value)}
+            ) => setUsername(e.target.value)}
           />
           <TextField
             label={"password"}

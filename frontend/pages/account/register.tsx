@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Button,
   Checkbox,
@@ -10,9 +10,14 @@ import {
   passwordRules,
   validateEmail,
   validatePassword,
+  validateUsername,
 } from "@/helpers/validation";
+import Link from "next/link";
+import UserContext from "@/context/authentication";
 
 function Register() {
+  const { register } = useContext(UserContext);
+
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -20,6 +25,8 @@ function Register() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [errorEmail, setErrorEmail] = useState<string>("");
   const [errorPassword, setErrorPassword] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [errorUsername, setErrorUsername] = useState<string>("");
 
   const handlePassword = (password: string) => {
     setErrorPassword(validatePassword(password));
@@ -34,14 +41,22 @@ function Register() {
     setEmail(email);
   };
 
+  const handleUsername = (username: string) => {
+    setErrorUsername(validateUsername(username));
+
+    setUsername(username);
+  };
+
   const isFormValid = () => {
     if (
       firstName === "" ||
       lastName === "" ||
       email === "" ||
+      username === "" ||
       password === "" ||
       errorPassword !== "" ||
-      errorEmail !== ""
+      errorEmail !== "" ||
+      errorUsername !== ""
     ) {
       return false;
     }
@@ -56,7 +71,17 @@ function Register() {
   };
 
   const handleRegistration = (e: React.FormEvent) => {
-    console.log("Registration");
+    e.preventDefault();
+
+    const userData = {
+      username,
+      password,
+      email,
+      last_name: lastName,
+      first_name: firstName,
+    };
+
+    register(userData);
   };
 
   return (
@@ -78,9 +103,17 @@ function Register() {
               e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
             ) => setLastName(e.target.value)}
           />
+          {errorUsername}
+          <TextField
+            label={"Username"}
+            variant={"outlined"}
+            onChange={(
+              e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+            ) => handleUsername(e.target.value)}
+          />
           {errorEmail}
           <TextField
-            label={"email"}
+            label={"Email"}
             variant={"outlined"}
             type={"email"}
             value={email}
@@ -111,12 +144,15 @@ function Register() {
           <Button
             variant={"contained"}
             disabled={!isFormValid()}
-            onSubmit={handleRegistration}
+            onClick={handleRegistration}
             type={"submit"}
           >
             Create Account
           </Button>
         </FormControl>
+        <div>
+          Already have an account? <Link href="/account/login">Login</Link>
+        </div>
       </div>
     </div>
   );

@@ -37,3 +37,11 @@ export function validateEmail(email: string) {
 
   return email.match(emailRegex);
 }
+
+export function validateUsername(username: string) {
+  if (username.length < 3) {
+    return "Username must be a minimum of 3 characters";
+  }
+  // TODO: Check if username already exists
+  return "";
+}

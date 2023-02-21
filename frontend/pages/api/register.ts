@@ -1,6 +1,5 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
-import cookie from "cookie";
 
 type Data = {
   message?: string;
@@ -9,11 +8,11 @@ type Data = {
   access?: string;
 };
 
-const LoginApi = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+const RegisterApi = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   let accessToken = null;
 
   if (req.method === "POST") {
-    const { username, password } = req.body;
+    const { username, password, first_name, last_name, email } = req.body;
 
     const config = {
       headers: {
@@ -25,24 +24,16 @@ const LoginApi = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     const body = {
       username,
       password,
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
     };
 
     try {
-      const { data: tokenReponse } = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/api-token-auth/`,
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/register/`,
         body,
         config
-      );
-      accessToken = tokenReponse.token;
-      res.setHeader(
-        "Set-Cookie",
-        cookie.serialize("token", String(accessToken), {
-          httpOnly: true,
-          secure: process.env.NEXT_PUBLIC_IS_HTTPS === "true" ? true : false,
-          maxAge: 60 * 60 * 24 * 30, // 30 days
-          path: "/",
-          sameSite: "strict",
-        })
       );
     } catch (error: any) {
       if (error.response) {
@@ -63,24 +54,12 @@ const LoginApi = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       }
       return res.status(500).json({ message: "Something went wrong." });
     }
-    if (accessToken) {
-      const userConfig = {
-        headers: {
-          Authorization: "Token " + accessToken,
-        },
-      };
 
-      const { data: userData } = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/user/`,
-        userConfig
-      );
-
-      res.status(200).json({ user: userData, access: accessToken });
-    }
+    res.status(200).json({ message: "User has been created." });
   } else {
     res.setHeader("Allow", ["POST"]);
-    res.status(405).json({ message: `Method ${req.method} is not allowed` });
+    res.status(405).json({ message: `Method ${req.method} is not allowed.` });
   }
 };
 
-export default LoginApi;
+export default RegisterApi;

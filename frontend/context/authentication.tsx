@@ -8,29 +8,41 @@ interface UserProviderProps {
 }
 
 interface LoginProps {
-  email: string;
+  username: string;
   password: string;
 }
 
 export interface IUser {
   first_name: string;
   last_name: string;
-  pk: string;
+  pk?: string;
   email: string;
+  username: string;
+  password?: string;
 }
 
 interface UserContext {
-  user: IUser | {};
+  user: IUser;
   accessToken: string;
   error: string;
   login: any;
+  register: any;
 }
 
+const defaultUser = {
+  first_name: "",
+  last_name: "",
+  username: "",
+  password: "",
+  email: "",
+};
+
 const defaultUserContext = {
-  user: {},
+  user: defaultUser,
   accessToken: "",
   error: "",
   login: (props: LoginProps) => new Promise(() => {}),
+  register: (props: IUser) => new Promise(() => {}),
 };
 
 // const UserContext = createContext(defaultUserContext);
@@ -38,23 +50,24 @@ const UserContext = createContext<UserContext>(defaultUserContext);
 
 export const UserProvider = (props: UserProviderProps) => {
   const { children } = props;
-  const [user, setUser] = useState<IUser | {}>({});
+  const [user, setUser] = useState<IUser>(defaultUser);
   const [accessToken, setAccessToken] = useState<string>("");
   const [error, setError] = useState<string>("");
 
   const router = useRouter();
 
+  const config = {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  };
+
   const login = async (props: LoginProps) => {
-    const { email, password } = props;
-    const config = {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    };
+    const { username, password } = props;
 
     const body = {
-      username: email,
+      username,
       password,
     };
 
@@ -64,8 +77,6 @@ export const UserProvider = (props: UserProviderProps) => {
         body,
         config
       );
-
-      console.log("accessResponse", accessResponse);
 
       if (accessResponse && accessResponse.user) {
         setUser(accessResponse.user[0]);
@@ -85,8 +96,37 @@ export const UserProvider = (props: UserProviderProps) => {
     }
   };
 
+  const register = async (props: IUser) => {
+    const body = {
+      username: props.username,
+      email: props.email,
+      password: props.password,
+      first_name: props.first_name,
+      last_name: props.last_name,
+    };
+
+    try {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/register`,
+        body,
+        config
+      );
+      login({
+        username: props.username,
+        password: props.password || "",
+      });
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        setError(error.response.data.message);
+        return;
+      }
+      console.error("Error: ", error.message);
+      setError("Something went wrong.");
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ user, accessToken, error, login }}>
+    <UserContext.Provider value={{ user, accessToken, error, login, register }}>
       {children}
     </UserContext.Provider>
   );
