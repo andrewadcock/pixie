@@ -27,6 +27,7 @@ interface UserContext {
   error: string;
   login: any;
   register: any;
+  logout: () => void;
 }
 
 const defaultUser = {
@@ -43,6 +44,7 @@ const defaultUserContext = {
   error: "",
   login: (props: LoginProps) => new Promise(() => {}),
   register: (props: IUser) => new Promise(() => {}),
+  logout: () => new Promise(() => {}),
 };
 
 // const UserContext = createContext(defaultUserContext);
@@ -125,8 +127,29 @@ export const UserProvider = (props: UserProviderProps) => {
     }
   };
 
+  const logout = async () => {
+    try {
+      // Remove cookie
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/logout`
+      );
+
+      setUser(defaultUser);
+      setAccessToken("");
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        setError(error.response.data.message);
+        return;
+      }
+      console.error("Error: ", error.message);
+      setError("Something went wrong.");
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ user, accessToken, error, login, register }}>
+    <UserContext.Provider
+      value={{ user, accessToken, error, login, register, logout }}
+    >
       {children}
     </UserContext.Provider>
   );
