@@ -8,10 +8,10 @@ import {
   TextField,
 } from "@mui/material";
 import Link from "next/link";
-import UserContext from "@/context/authentication";
+import UserContext from "@/context/authenticationContext";
 
 function Login() {
-  const { login } = useContext(UserContext);
+  const userCtx = useContext(UserContext);
 
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -19,7 +19,7 @@ function Login() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    login({ username, password });
+    userCtx.login({ username, password });
   };
 
   const handleLoginViaEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {

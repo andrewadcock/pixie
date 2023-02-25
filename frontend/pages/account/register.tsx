@@ -13,10 +13,10 @@ import {
   validateUsername,
 } from "@/helpers/validation";
 import Link from "next/link";
-import UserContext from "@/context/authentication";
+import UserContext from "@/context/authenticationContext";
 
 function Register() {
-  const { register } = useContext(UserContext);
+  const userCtx = useContext(UserContext);
 
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -81,7 +81,7 @@ function Register() {
       first_name: firstName,
     };
 
-    register(userData);
+    userCtx.register(userData);
   };
 
   return (

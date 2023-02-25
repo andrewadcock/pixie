@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   Checkbox,
@@ -8,15 +8,17 @@ import {
   TextField,
 } from "@mui/material";
 import Link from "next/link";
-import UserContext from "@/context/authentication";
+import UserContext from "@/context/authenticationContext";
 
 function Logout() {
-  const { logout } = useContext(UserContext);
+  const userCtx = useContext(UserContext);
 
-  const handleLogout = (e: React.FormEvent) => {
-    e.preventDefault();
-    logout();
+  const logout = async () => {
+    await userCtx.logout();
   };
+  useEffect(() => {
+    logout().then();
+  }, []);
 
   return (
     <div>

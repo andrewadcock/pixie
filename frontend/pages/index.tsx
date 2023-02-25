@@ -1,12 +1,9 @@
-import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import { useContext } from "react";
-import UserContext from "@/context/authentication";
+import UserContext from "@/context/authenticationContext";
 
 export default function Home() {
   const { user } = useContext(UserContext);
-
-  console.log("userCtx", user);
 
   return (
     <>

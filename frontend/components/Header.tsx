@@ -10,14 +10,15 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useContext } from "react";
-import UserContext from "@/context/authentication";
+import UserContext from "@/context/authenticationContext";
 import Link from "next/link";
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "Account", "Dashboard"];
 
 function Header() {
   const userCtx = useContext(UserContext);
   console.log("userCtx", userCtx);
+
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -28,6 +29,11 @@ function Header() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleLogout = async () => {
+    handleCloseUserMenu();
+    await userCtx.logout();
   };
 
   return (
@@ -47,7 +53,10 @@ function Header() {
                   />
                 </IconButton>
               ) : (
-                <Link href={"/account/login/"}>Log In</Link>
+                <>
+                  <Link href={"/account/login/"}>Log In</Link> |{" "}
+                  <Link href={"/account/register/"}>Register</Link>
+                </>
               )}
             </Tooltip>
             <Menu
@@ -73,6 +82,11 @@ function Header() {
                   </Link>
                 </MenuItem>
               ))}
+              <MenuItem key={"logout"} onClick={handleLogout}>
+                <Link href={`/`}>
+                  <Typography textAlign="center">Logout</Typography>
+                </Link>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
