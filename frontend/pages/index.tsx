@@ -7,7 +7,7 @@ export default function Home() {
 
   return (
     <>
-      {user.first_name ? (
+      {user?.first_name ? (
         `Welcome, ${user.first_name}`
       ) : (
         <a href={"/account/login/"}>Please log in</a>

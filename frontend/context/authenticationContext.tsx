@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import LoginApi from "@/pages/api/login";
@@ -25,9 +25,10 @@ interface UserContext {
   user: IUser;
   accessToken: string;
   error: string;
-  login: any;
-  register: any;
+  login: (props: LoginProps) => Promise<unknown>;
+  register: (props: IUser) => Promise<unknown>;
   logout: () => void;
+  isUserLoggedIn: () => void;
 }
 
 const defaultUser = {
@@ -45,6 +46,7 @@ const defaultUserContext = {
   login: (props: LoginProps) => new Promise(() => {}),
   register: (props: IUser) => new Promise(() => {}),
   logout: () => new Promise(() => {}),
+  isUserLoggedIn: () => new Promise(() => {}),
 };
 
 // const UserContext = createContext(defaultUserContext);
@@ -145,9 +147,34 @@ export const UserProvider = (props: UserProviderProps) => {
     }
   };
 
+  const isUserLoggedIn = async () => {
+    try {
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/user`
+      );
+      setUser(data.user);
+      setAccessToken(data.acess);
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        setError(error.response.data.message);
+      } else {
+        console.error("Error: ", error.message);
+        setError("Something went wrong.");
+      }
+    }
+  };
+
   return (
     <UserContext.Provider
-      value={{ user, accessToken, error, login, register, logout }}
+      value={{
+        user,
+        accessToken,
+        error,
+        login,
+        register,
+        logout,
+        isUserLoggedIn,
+      }}
     >
       {children}
     </UserContext.Provider>

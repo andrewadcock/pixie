@@ -45,7 +45,7 @@ function Header() {
         <Toolbar disableGutters sx={{ justifyContent: "end" }}>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              {userCtx.user.username ? (
+              {userCtx.user?.username ? (
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
                     alt={userCtx.user.username}
