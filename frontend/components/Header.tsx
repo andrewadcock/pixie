@@ -17,7 +17,6 @@ const settings = ["Profile", "Account", "Dashboard"];
 
 function Header() {
   const userCtx = useContext(UserContext);
-  console.log("userCtx", userCtx);
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null

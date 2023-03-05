@@ -11,6 +11,7 @@ class UserViewSet(generics.ListAPIView):
     def get_queryset(self):
         return User.objects.filter(username=self.request.user)
 
+
 class RegisterUserView(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = RegisterUserSerializer

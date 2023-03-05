@@ -29,17 +29,19 @@ const LoginApi = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
     try {
       const { data: tokenReponse } = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/api-token-auth/`,
+        `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/token/`,
         body,
         config
       );
-      accessToken = tokenReponse.token;
+
+      accessToken = tokenReponse.access;
+
       res.setHeader(
         "Set-Cookie",
-        cookie.serialize("token", String(accessToken), {
+        cookie.serialize("refresh", String(tokenReponse.refresh), {
           httpOnly: true,
-          secure: process.env.NEXT_PUBLIC_IS_HTTPS === "true" ? true : false,
-          maxAge: 60 * 60 * 24 * 30, // 30 days
+          secure: process.env.NEXT_PUBLIC_IS_HTTPS === "true",
+          maxAge: 60 * 60 * 24, // 1 day
           path: "/",
           sameSite: "strict",
         })
@@ -66,16 +68,36 @@ const LoginApi = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     if (accessToken) {
       const userConfig = {
         headers: {
-          Authorization: "Token " + accessToken,
+          Authorization: "Bearer " + accessToken,
         },
       };
 
-      const { data: userData } = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/user/`,
-        userConfig
-      );
+      try {
+        const { data: userData } = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/user/`,
+          userConfig
+        );
 
-      res.status(200).json({ user: userData, access: accessToken });
+        res.status(200).json({ user: userData, access: accessToken });
+      } catch (error: any) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+          return res.status(401).json({ message: error.response.data.detail });
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.error(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error("Error", error.message);
+        }
+        return res.status(500).json({ message: "Something went wrong." });
+      }
     }
   } else {
     res.setHeader("Allow", ["POST"]);

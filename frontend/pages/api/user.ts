@@ -30,7 +30,6 @@ const User = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
         body,
         config
       );
-      console.log("data", data);
     } catch (error: any) {}
   } else {
     res.setHeader("Allow", ["POST"]);

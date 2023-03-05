@@ -134,7 +134,6 @@ export const UserProvider = (props: UserProviderProps) => {
       // Remove cookie
       await axios.post(`${process.env.NEXT_PUBLIC_LOCAL_URL}api/logout`);
 
-      console.log("this is being hit");
       setUser(defaultUser);
       setAccessToken("");
     } catch (error: any) {
