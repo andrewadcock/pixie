@@ -41,9 +41,17 @@ function Header() {
       sx={{ backgroundColor: "transparent", position: "fixed" }}
     >
       <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ justifyContent: "end" }}>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+        <Toolbar disableGutters>
+          <h1>
+            <Link href={"/"}>No, you pick!</Link>{" "}
+          </h1>
+          <Box
+            sx={{
+              flexGrow: 1,
+              textAlign: "right",
+            }}
+          >
+            <Tooltip title="Open settings" sx={{ justifyContent: "flex-end" }}>
               {userCtx.user?.username ? (
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar

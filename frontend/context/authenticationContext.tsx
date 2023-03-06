@@ -29,6 +29,12 @@ interface UserContext {
   register: (props: IUser) => Promise<unknown>;
   logout: () => void;
   isUserLoggedIn: () => void;
+  updateUserProfile: (props: IUser) => void;
+  updateUserPassword: (props: PasswordValidityProps) => void;
+}
+
+interface PasswordValidityProps {
+  password: string;
 }
 
 const defaultUser = {
@@ -47,6 +53,8 @@ const defaultUserContext = {
   register: (props: IUser) => new Promise(() => {}),
   logout: () => new Promise(() => {}),
   isUserLoggedIn: () => new Promise(() => {}),
+  updateUserProfile: () => new Promise(() => {}),
+  updateUserPassword: () => new Promise(() => {}),
 };
 
 // const UserContext = createContext(defaultUserContext);
@@ -61,7 +69,9 @@ export const UserProvider = (props: UserProviderProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    isUserLoggedIn();
+    if (!user.username) {
+      isUserLoggedIn();
+    }
   }, []);
 
   const config = {
@@ -169,6 +179,56 @@ export const UserProvider = (props: UserProviderProps) => {
     }
   };
 
+  const updateUserProfile = async (props: IUser) => {
+    const body = {
+      username: props.username,
+      email: props.email,
+      first_name: props.first_name,
+      last_name: props.last_name,
+    };
+
+    try {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/updateProfile`,
+        body,
+        config
+      );
+
+      // Send back update report
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        setError(error.response.data.message);
+        return;
+      }
+      console.error("Error: ", error.message);
+      setError("Something went wrong.");
+    }
+  };
+
+  const updateUserPassword = async (props: PasswordValidityProps) => {
+    console.log("props in updateUserPassword", props);
+    const body = {
+      password: props.password,
+    };
+
+    try {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/updatePassword`,
+        body,
+        config
+      );
+
+      // Send back update report
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        setError(error.response.data.message);
+        return;
+      }
+      console.error("Error: ", error.message);
+      setError("Something went wrong.");
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -179,6 +239,8 @@ export const UserProvider = (props: UserProviderProps) => {
         register,
         logout,
         isUserLoggedIn,
+        updateUserProfile,
+        updateUserPassword,
       }}
     >
       {children}
