@@ -11,7 +11,7 @@ type Data = {
 const Logout = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   res.setHeader(
     "Set-Cookie",
-    cookie.serialize("token", "", {
+    cookie.serialize("refresh", "", {
       httpOnly: true,
       secure: process.env.NEXT_PUBLIC_IS_HTTPS === "true",
       expires: new Date(0),

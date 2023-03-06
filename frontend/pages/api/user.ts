@@ -26,17 +26,32 @@ const User = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
         refresh,
       };
       const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/user/`,
+        `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/token/refresh/`,
         body,
         config
       );
+
+      if (data && data.access) {
+        const userConfig = {
+          headers: {
+            Authorization: "Bearer " + data.access,
+          },
+        };
+
+        const { data: userData } = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/user/`,
+          userConfig
+        );
+
+        res.status(200).json({ user: userData, access: data.access });
+      } else {
+        res.status(500).json({ message: "Something went wrong" });
+      }
     } catch (error: any) {}
   } else {
     res.setHeader("Allow", ["POST"]);
     res.status(405).json({ message: `Method ${req.method} is not allowed.` });
   }
-
-  res.status(200).json({ message: "User has been logged out." });
 };
 
 export default User;

@@ -60,6 +60,10 @@ export const UserProvider = (props: UserProviderProps) => {
 
   const router = useRouter();
 
+  useEffect(() => {
+    isUserLoggedIn();
+  }, []);
+
   const config = {
     headers: {
       Accept: "application/json",
@@ -115,6 +119,7 @@ export const UserProvider = (props: UserProviderProps) => {
         body,
         config
       );
+
       login({
         username: props.username,
         password: props.password || "",
@@ -151,7 +156,8 @@ export const UserProvider = (props: UserProviderProps) => {
       const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_LOCAL_URL}api/user`
       );
-      setUser(data.user);
+
+      setUser(data.user[0]);
       setAccessToken(data.acess);
     } catch (error: any) {
       if (error.response && error.response.data) {
