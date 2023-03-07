@@ -1,20 +1,25 @@
 export function validatePassword(password: string) {
   let errorMessage = "";
+  let error = false;
 
   if (password.length < 8) {
     errorMessage = "Passwords must be at least 8 characters";
+    error = true;
   } else if (password.search(/[a-z]/) < 0) {
     errorMessage = "Password must contain at least one lowercase letter";
+    error = true;
   } else if (password.search(/[A-Z]/) < 0) {
     errorMessage = "Password must contain at least one uppercase letter";
+    error = true;
   } else if (
     password.search(/[0-9]/) < 0 &&
     !/[~`!#$%@.\()^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(password) // checks for special chars
   ) {
     errorMessage =
       "Password must contain at least one number or special character (!, &, *, $, >, etc.";
+    error = true;
   }
-  return errorMessage;
+  return { error, message: errorMessage };
 }
 
 export function passwordRules() {

@@ -6,13 +6,7 @@ import {
   FormControlLabel,
   TextField,
 } from "@mui/material";
-import {
-  passwordRules,
-  validateEmail,
-  validatePassword,
-  validateUsername,
-} from "@/helpers/validation";
-import Link from "next/link";
+import { passwordRules, validatePassword } from "@/helpers/validation";
 import UserContext from "@/context/authenticationContext";
 
 function UpdatePasswordForm() {
@@ -22,75 +16,81 @@ function UpdatePasswordForm() {
   const [password2, setPassword2] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [errorPassword, setErrorPassword] = useState<string>("");
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handlePassword = (password: string, id: number) => {
+  useEffect(() => {
+    const isPasswordValid = validatePassword(password);
     if (password !== password2) {
       setErrorPassword("Passwords do not match");
+    } else {
+      setErrorPassword(isPasswordValid.message);
     }
-    setErrorPassword(validatePassword(password));
-    setPassword(password);
-    setPassword2(password2);
-  };
-
-  const isFormValid = () => {
-    return password === password2 && errorPassword === "";
-  };
+    setIsFormValid(password === password2 && !isPasswordValid.error);
+  }, [password, password2]);
 
   const handlePasswordChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      handleProfileUpdate(e);
+      handlePasswordUpdate(e);
     }
   };
 
-  const handleProfileUpdate = (e: React.FormEvent) => {
+  const handlePasswordUpdate = async (e: React.FormEvent) => {
+    setLoading(true);
     e.preventDefault();
 
-    userCtx.updateUserPassword({ password });
+    await userCtx.updateUserPassword({ password });
+    setLoading(false);
   };
   return (
     <div>
       <h3>Update Password</h3>
-      <div>
-        <FormControl tabIndex={0} onKeyUp={handlePasswordChange}>
-          {passwordRules()}
-          {errorPassword}
-          <TextField
-            label={"Password"}
-            variant={"outlined"}
-            type={showPassword ? "text" : "password"}
-            value={password}
-            onChange={(
-              e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-            ) => handlePassword(e.target.value, 1)}
-          />
-          <TextField
-            label={"Re-type Password"}
-            variant={"outlined"}
-            type={showPassword ? "text" : "password"}
-            value={password2}
-            onChange={(
-              e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-            ) => handlePassword(e.target.value, 2)}
-          />
+      {errorPassword ? <h5>{errorPassword}</h5> : null}
+      {loading ? (
+        <h1>Loading</h1>
+      ) : (
+        <div>
+          <FormControl tabIndex={0} onKeyUp={handlePasswordChange}>
+            {passwordRules()}
+            {errorPassword}
+            <TextField
+              label={"Password"}
+              variant={"outlined"}
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(
+                e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+              ) => setPassword(e.target.value)}
+            />
+            <TextField
+              label={"Re-type Password"}
+              variant={"outlined"}
+              type={showPassword ? "text" : "password"}
+              value={password2}
+              onChange={(
+                e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+              ) => setPassword2(e.target.value)}
+            />
 
-          <FormControlLabel
-            control={<Checkbox />}
-            label="Show Password"
-            onChange={(e: React.SyntheticEvent) =>
-              setShowPassword((e.target as HTMLInputElement).checked)
-            }
-          />
+            <FormControlLabel
+              control={<Checkbox />}
+              label="Show Password"
+              onChange={(e: React.SyntheticEvent) =>
+                setShowPassword((e.target as HTMLInputElement).checked)
+              }
+            />
 
-          <Button
-            variant={"contained"}
-            disabled={!isFormValid()}
-            onClick={handleProfileUpdate}
-            type={"submit"}
-          >
-            Update Password
-          </Button>
-        </FormControl>
-      </div>
+            <Button
+              variant={"contained"}
+              disabled={!isFormValid}
+              onClick={handlePasswordUpdate}
+              type={"submit"}
+            >
+              Update Password
+            </Button>
+          </FormControl>
+        </div>
+      )}
     </div>
   );
 }

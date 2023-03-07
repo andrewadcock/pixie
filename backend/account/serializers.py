@@ -5,7 +5,13 @@ from rest_framework import serializers
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'email', 'pk', 'first_name', 'last_name']
+        fields = ['username', 'email', 'pk', 'first_name', 'last_name', 'password']
+
+    def update(self, instance, validated_data):
+        if 'password' in validated_data:
+            password = validated_data.pop('password', None)
+            instance.set_password(password)
+        return super().update(instance, validated_data)
 
 
 class RegisterUserSerializer(serializers.HyperlinkedModelSerializer):

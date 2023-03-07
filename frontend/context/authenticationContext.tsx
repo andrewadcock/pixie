@@ -208,16 +208,16 @@ export const UserProvider = (props: UserProviderProps) => {
   };
 
   const updateUserPassword = async (props: PasswordValidityProps) => {
-    const body = {
-      password: props.password,
-    };
+    const body = { password: props.password };
 
     try {
-      await axios.post(
+      const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_LOCAL_URL}api/updatePassword`,
         body,
         config
       );
+
+      return response.data;
 
       // Send back update report
     } catch (error: any) {

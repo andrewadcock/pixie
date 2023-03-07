@@ -29,7 +29,8 @@ function Register() {
   const [errorUsername, setErrorUsername] = useState<string>("");
 
   const handlePassword = (password: string) => {
-    setErrorPassword(validatePassword(password));
+    const isPasswordValid = validatePassword(password);
+    setErrorPassword(isPasswordValid.message);
     setPassword(password);
   };
 
