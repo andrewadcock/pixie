@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import cookie from "cookie";
 import axios from "axios";
+import { getNewTokenFromRefresh } from "@/helpers/api";
 
 type Data = {
   message?: string;
@@ -15,21 +16,7 @@ const User = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       res.status(403).json({ message: "Not authorized." });
     }
     try {
-      const { refresh } = cookie.parse(req.headers.cookie || "");
-      const config = {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      };
-      const body = {
-        refresh,
-      };
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/token/refresh/`,
-        body,
-        config
-      );
+      const data = await getNewTokenFromRefresh(req);
 
       if (data && data.access) {
         const userConfig = {

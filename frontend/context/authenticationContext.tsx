@@ -29,7 +29,7 @@ interface UserContext {
   register: (props: IUser) => Promise<unknown>;
   logout: () => void;
   isUserLoggedIn: () => void;
-  updateUserProfile: (props: IUser) => void;
+  updateUserProfile: (props: IUser) => any;
   updateUserPassword: (props: PasswordValidityProps) => void;
 }
 
@@ -188,11 +188,13 @@ export const UserProvider = (props: UserProviderProps) => {
     };
 
     try {
-      await axios.post(
+      const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_LOCAL_URL}api/updateProfile`,
         body,
         config
       );
+
+      return response.data;
 
       // Send back update report
     } catch (error: any) {
@@ -206,7 +208,6 @@ export const UserProvider = (props: UserProviderProps) => {
   };
 
   const updateUserPassword = async (props: PasswordValidityProps) => {
-    console.log("props in updateUserPassword", props);
     const body = {
       password: props.password,
     };

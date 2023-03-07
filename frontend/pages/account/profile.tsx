@@ -19,7 +19,6 @@ import UpdatePasswordForm from "@/components/account/updatePasswordForm";
 
 function Profile() {
   const userCtx = useContext(UserContext);
-  console.log("userCtx", userCtx);
 
   return (
     <div>

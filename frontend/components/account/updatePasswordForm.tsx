@@ -17,7 +17,6 @@ import UserContext from "@/context/authenticationContext";
 
 function UpdatePasswordForm() {
   const userCtx = useContext(UserContext);
-  console.log("userCtx", userCtx);
 
   const [password, setPassword] = useState<string>("");
   const [password2, setPassword2] = useState<string>("");
