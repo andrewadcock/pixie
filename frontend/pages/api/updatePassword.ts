@@ -13,10 +13,11 @@ const UpdatePassword = async (
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) => {
-  let accessToken = null;
-
-  if (req.method === "PATCH") {
-    const body = { password: req.body.password };
+  if (req.method === "POST") {
+    const body = {
+      old_password: req.body.oldPassword,
+      new_password: req.body.newPassword,
+    };
 
     try {
       const data = await getNewTokenFromRefresh(req);
@@ -29,7 +30,7 @@ const UpdatePassword = async (
         };
 
         const { data: userData } = await axios.patch(
-          `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/update-profile/`,
+          `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/update-password/`,
           body,
           userConfig
         );

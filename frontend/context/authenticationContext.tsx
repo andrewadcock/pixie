@@ -34,7 +34,8 @@ interface UserContext {
 }
 
 interface PasswordValidityProps {
-  password: string;
+  newPassword: string;
+  oldPassword: string;
 }
 
 const defaultUser = {
@@ -208,10 +209,13 @@ export const UserProvider = (props: UserProviderProps) => {
   };
 
   const updateUserPassword = async (props: PasswordValidityProps) => {
-    const body = { password: props.password };
+    const body = {
+      oldPassword: props.oldPassword,
+      newPassword: props.newPassword,
+    };
 
     try {
-      const response = await axios.patch(
+      const response = await axios.post(
         `${process.env.NEXT_PUBLIC_LOCAL_URL}api/updatePassword`,
         body,
         config
