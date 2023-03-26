@@ -58,6 +58,8 @@ When committing to the repo several checks will run
 2. Install for the project
    1. `pre-commit install`
 
+Having an issue running `pre-commit`? Something about python not being found? Start a virtual environment to fix this
+issue.
 
 ### Adding PIP requirements
 Add all required packages to `/backend/requirements.txt`. Remember to restart docker for installation.
