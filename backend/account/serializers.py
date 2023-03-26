@@ -30,6 +30,7 @@ class RegisterUserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = ['username', 'password', 'email', 'pk', 'first_name', 'last_name']
 
+
 class ChangePasswordSerializer(serializers.Serializer):
     model = User
     old_password = serializers.CharField(required=True)

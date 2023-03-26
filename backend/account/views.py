@@ -32,9 +32,10 @@ class UserRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class ChangePasswordView(generics.UpdateAPIView):
     serializer_class = ChangePasswordSerializer
-    permission_classes = [permissions.IsAuthenticated,]
+    permission_classes = [permissions.IsAuthenticated, ]
 
     def get_object(self, queryset=None):
         obj = self.request.user
@@ -43,10 +44,10 @@ class ChangePasswordView(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         self.object = self.get_object
         serializer = self.get_serializer(data=request.data)
-        user=request.user
+        user = request.user
 
         if user is None:
-            return Response({"response":"No User exist"})
+            return Response({"response": "No User exist"})
 
         if serializer.is_valid():
 

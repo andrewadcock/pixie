@@ -16,7 +16,7 @@ Pixie is an online list creator and picker service. By default, it tracks movies
    1. View backend at http://localhost:8000
 6. In New Terminal: `cd /frontend/`
 7. Run command `npm install`
-8. Run command `npm dev`
+8. Run command `npm dev:ts`
    1. View frontend at http://localhost:3000
 
 ### /backend/.env
@@ -47,3 +47,13 @@ NEXT_PUBLIC_LOCAL_URL = 'http://localhost:3000/'
 NEXT_PUBLIC_API_VERSION = 'v1'
 NEXT_PUBLIC_IS_HTTPS = true
 ```
+
+## Notes & Reminders
+### Adding PIP requirements
+Add all required packages to `/backend/requirements.txt`. Remember to restart docker for installation.
+`
+### Run Flake 8 Locally
+1. Install flake8
+   1. `sudo apt install flake8`
+2. Run command (can be found in `/backend/Dockerfile`)
+   1. ` flake8 --ignore=E501,F401 .`
