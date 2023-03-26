@@ -19,32 +19,32 @@ coverage/
 .eslintcache
 *.tgz
 
-# Backup files # 
-*.bak 
+# Backup files #
+*.bak
 
 # Editors/IDEs
 .idea/
-.vscode/* 
-!.vscode/settings.json 
-!.vscode/tasks.json 
-!.vscode/launch.json 
-!.vscode/extensions.json 
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 .history
 *.sublime-project
 *.sublime-workspace
 
-# Installer logs 
-pip-log.txt 
-pip-delete-this-directory.txt 
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Environments 
-.env 
-.venv 
-env/ 
-venv/ 
-ENV/ 
-env.bak/ 
-venv.bak/ 
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 
 # Logs
 logs

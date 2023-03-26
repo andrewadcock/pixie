@@ -1,6 +1,6 @@
 # Pixie
 
-Pixie is an online list creator and picker service. By default, it tracks movies with genre(s). 
+Pixie is an online list creator and picker service. By default, it tracks movies with genre(s).
 
 
 ## Setup
@@ -21,7 +21,7 @@ Pixie is an online list creator and picker service. By default, it tracks movies
 
 ### /backend/.env
 ```dotenv
-DEBUG=True 
+DEBUG=True
 SECRET_KEY='sdflkjfartyBlartFastIthinkIsHowItsspelled'
 ALLOWED_HOSTS=*
 
@@ -49,6 +49,16 @@ NEXT_PUBLIC_IS_HTTPS = true
 ```
 
 ## Notes & Reminders
+### Pre-commit
+This project uses pre-commit ([https://github.com/pre-commit/pre-commit](https://github.com/pre-commit/pre-commit)).
+When committing to the repo several checks will run
+
+1. Install pre-commit
+   1. `sudo apt install pre-commit`
+2. Install for the project
+   1. `pre-commit install`
+
+
 ### Adding PIP requirements
 Add all required packages to `/backend/requirements.txt`. Remember to restart docker for installation.
 `
