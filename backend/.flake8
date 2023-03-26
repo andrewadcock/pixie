@@ -1,0 +1,12 @@
+[flake8]
+ignore = F401, 501
+max-line-length = 89
+max-complexity = 12
+select = B,C,E,F,W,T4,B9
+filename = *.py
+exclude =
+    .git
+    .mypy_cache
+    __pycache__
+    venv
+    migrations
