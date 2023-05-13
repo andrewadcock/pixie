@@ -69,3 +69,14 @@ Add all required packages to `/backend/requirements.txt`. Remember to restart do
    1. `sudo apt install flake8`
 2. Run command (can be found in `/backend/Dockerfile`)
    1. ` flake8 --ignore=E501,F401 .`
+
+### Django Migrations
+To make migrations enter the backend containers bash interface.
+
+1. List running containers to get backend name
+   1. `docker ps`
+2. Enter bash
+   1. `docker exec -it <CONTAINER_NAME> /bin/bash`
+   2. example: `docker exec -it pixie_backend_1 /bin/bash`
+3. Run migration
+   1. `python manage.py makemigrations && python manage.py migrate`

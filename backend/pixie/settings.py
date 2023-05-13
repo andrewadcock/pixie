@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'movieapi',
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'django_rest_passwordreset',
+    'anymail',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +139,13 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ANYMAIL = {
+    "MAILGUN_API_KEY": "key-4e1a40275a3cfd79f232d52d04deab59",
+    "MAILGUN_SENDER_DOMAIN": 'andrewadcock.com',
+}
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+DEFAULT_FROM_EMAIL = "andrew@andrewadcock.com"
+SERVER_EMAIL = "andrew@andrewadcock.com"
