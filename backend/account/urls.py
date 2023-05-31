@@ -15,4 +15,6 @@ urlpatterns = [
     path('update-password/', ChangePasswordView.as_view(), name="updatePassword"),
     path('token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    path('password-reset/',
+         include('django_rest_passwordreset.urls', namespace='password_reset')),
 ]
