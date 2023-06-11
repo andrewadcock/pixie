@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import cookie from "cookie";
 
