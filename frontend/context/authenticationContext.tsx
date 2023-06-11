@@ -82,6 +82,13 @@ export const UserProvider = (props: UserProviderProps) => {
     },
   };
 
+  /**
+   * Accepts user credentials to log user in to django instance
+   *
+   * Upon failure local errors are set. Access token set to local context.
+   *
+   * @param props LoginProps
+   */
   const login = async (props: LoginProps) => {
     const { username, password } = props;
 
