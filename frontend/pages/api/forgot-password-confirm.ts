@@ -1,16 +1,29 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
+import { getNewTokenFromRefresh } from "@/helpers/api";
 
 type Data = {
   message?: string;
   data?: string;
-  user?: any;
-  access?: string;
 };
 
-const RegisterApi = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+/**
+ * Forgot Password Confirm
+ *
+ * @param req
+ * @param res
+ * @constructor
+ */
+const ForgotPasswordConfirm = async (
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) => {
+  console.log("forgot-password-confirm");
   if (req.method === "POST") {
-    const { username, password, first_name, last_name, email } = req.body;
+    const body = {
+      password: req.body.password,
+      token: req.body.token,
+    };
 
     const config = {
       headers: {
@@ -19,20 +32,15 @@ const RegisterApi = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       },
     };
 
-    const body = {
-      username,
-      password,
-      first_name: first_name,
-      last_name: last_name,
-      email: email,
-    };
-
     try {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/register/`,
+      const data = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/password-reset/confirm/`,
+        // "localhost:8000/api/v1/account/password-reset/confirm/",
         body,
         config
       );
+      console.log("data", data);
+      // res.status(200).json({ data });
     } catch (error: any) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -52,12 +60,10 @@ const RegisterApi = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       }
       return res.status(500).json({ message: "Something went wrong." });
     }
-
-    res.status(200).json({ message: "User has been created." });
   } else {
     res.setHeader("Allow", ["POST"]);
     res.status(405).json({ message: `Method ${req.method} is not allowed.` });
   }
 };
 
-export default RegisterApi;
+export default ForgotPasswordConfirm;

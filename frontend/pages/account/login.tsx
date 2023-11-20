@@ -62,9 +62,13 @@ function Login() {
           <Button variant={"contained"} onClick={handleLogin} type={"submit"}>
             Login
           </Button>
+          <div>
+            <Link href="/account/forgot-password/email">Forgot Password?</Link>
+          </div>
         </FormControl>
         <div>
-          Don't have an account? <Link href="/account/register">Sign Up</Link>
+          Don&apos;t have an account?{" "}
+          <Link href="/account/register">Sign Up</Link>
         </div>
       </div>
     </div>

@@ -31,11 +31,22 @@ interface UserContext {
   isUserLoggedIn: () => void;
   updateUserProfile: (props: IUser) => any;
   updateUserPassword: (props: PasswordValidityProps) => void;
+  forgotPasswordSendResetEmail: (props: IForgotPasswordSendResetEmail) => any;
 }
 
 interface PasswordValidityProps {
   newPassword: string;
   oldPassword: string;
+}
+
+interface IForgotPasswordSendResetEmail {
+  email: string;
+  token?: string;
+}
+
+interface IForgotPasswordUpdatePassword {
+  email: string;
+  token: string;
 }
 
 const defaultUser = {
@@ -56,6 +67,7 @@ const defaultUserContext = {
   isUserLoggedIn: () => new Promise(() => {}),
   updateUserProfile: () => new Promise(() => {}),
   updateUserPassword: () => new Promise(() => {}),
+  forgotPasswordSendResetEmail: () => new Promise(() => {}),
 };
 
 // const UserContext = createContext(defaultUserContext);
@@ -197,7 +209,7 @@ export const UserProvider = (props: UserProviderProps) => {
 
     try {
       const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/updateProfile`,
+        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/update-profile`,
         body,
         config
       );
@@ -215,6 +227,11 @@ export const UserProvider = (props: UserProviderProps) => {
     }
   };
 
+  /**
+   * Uses update password flow for logged in user
+   *
+   * @param props
+   */
   const updateUserPassword = async (props: PasswordValidityProps) => {
     const body = {
       oldPassword: props.oldPassword,
@@ -223,12 +240,46 @@ export const UserProvider = (props: UserProviderProps) => {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/updatePassword`,
+        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/update-password`,
         body,
         config
       );
 
       return response.data;
+
+      // Send back update report
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        setError(error.response.data.message);
+        return;
+      }
+      console.error("Error: ", error.message);
+      setError("Something went wrong.");
+    }
+  };
+
+  /**
+   * Using the Forgot Password flow for logged-out user
+   *
+   * Triggers email send with forgot password link to email param
+   */
+  const forgotPasswordSendResetEmail = async (
+    props: IForgotPasswordSendResetEmail
+  ) => {
+    const body = {
+      email: props.email,
+    };
+
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/send-forgot-password-reset-email`,
+        body,
+        config
+      );
+
+      console.log("response in authenticationContext", response);
+
+      return response;
 
       // Send back update report
     } catch (error: any) {
@@ -253,6 +304,7 @@ export const UserProvider = (props: UserProviderProps) => {
         isUserLoggedIn,
         updateUserProfile,
         updateUserPassword,
+        forgotPasswordSendResetEmail,
       }}
     >
       {children}
