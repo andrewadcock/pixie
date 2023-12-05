@@ -26,9 +26,6 @@ SECRET_KEY = 'django-insecure-b^#dg%!u85u+sic2cd_0o+-@9+=m6sepr5d!_=2$z@^rrmrp^j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = ['*']
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'movieapi',
     'account',
     'rest_framework',
@@ -51,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -141,12 +140,15 @@ REST_FRAMEWORK = {
     ],
 }
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Env vars should be comma delimated
+CORS_ALLOWED_ORIGINS = os.environ.get('ALLOWED_HOSTS').split(',')
 
 ANYMAIL = {
     "MAILGUN_API_KEY": "key-4e1a40275a3cfd79f232d52d04deab59",
     "MAILGUN_SENDER_DOMAIN": 'andrewadcock.com',
 }
+
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
-DEFAULT_FROM_EMAIL = "andrew@andrewadcock.com"
-SERVER_EMAIL = "andrew@andrewadcock.com"
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+SERVER_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')

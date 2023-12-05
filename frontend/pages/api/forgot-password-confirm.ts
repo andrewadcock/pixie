@@ -18,7 +18,6 @@ const ForgotPasswordConfirm = async (
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) => {
-  console.log("forgot-password-confirm");
   if (req.method === "POST") {
     const body = {
       password: req.body.password,
@@ -35,12 +34,9 @@ const ForgotPasswordConfirm = async (
     try {
       const data = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/password-reset/confirm/`,
-        // "localhost:8000/api/v1/account/password-reset/confirm/",
         body,
         config
       );
-      console.log("data", data);
-      // res.status(200).json({ data });
     } catch (error: any) {
       if (error.response) {
         // The request was made and the server responded with a status code

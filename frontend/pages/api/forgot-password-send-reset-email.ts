@@ -18,12 +18,7 @@ const forgotPasswordSendResetEmail = async (
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) => {
-  console.log("forgot-password");
   if (req.method === "POST") {
-    const body = {
-      email: req.body.email,
-    };
-
     const config = {
       headers: {
         Accept: "application/json",
@@ -33,15 +28,13 @@ const forgotPasswordSendResetEmail = async (
 
     try {
       const data = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/forgot-password-send-reset-email`,
-        body,
+        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/forgot-password-send-reset-email/`,
+        req.body,
         config
       );
-      console.log("data", data);
 
       // res.status(200).json({ data });
     } catch (error: any) {
-      console.log("ERROR ERROR ERROR ERROR ERROR");
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx

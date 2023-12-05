@@ -11,8 +11,8 @@ def password_reset_token_created(
 ):
 
     email_plaintext_message = "<h2>Looks like you forgot your password</h2> Don't worry,\
-        we forget things sometimes too. localhost:3000/account/forgot-password \
-        &page=confirm&token={}&email={}".format(
+        we forget things sometimes too. localhost:3000/account/forgot-password? \
+        page=confirm&token={}&email={}".format(
         reset_password_token.key, reset_password_token.user.email)
 
 #     html_message = render_to_string('mail_template.html', {'context': 'values'})

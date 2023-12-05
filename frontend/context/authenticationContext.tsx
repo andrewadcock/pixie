@@ -272,23 +272,16 @@ export const UserProvider = (props: UserProviderProps) => {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/send-forgot-password-reset-email`,
+        `${process.env.NEXT_PUBLIC_API_URL}api/${process.env.NEXT_PUBLIC_API_VERSION}/account/forgot-password-send-reset-email/`,
         body,
         config
       );
 
-      console.log("response in authenticationContext", response);
-
       return response;
 
-      // Send back update report
+      // Send back error report anyway and deal on the frontend
     } catch (error: any) {
-      if (error.response && error.response.data) {
-        setError(error.response.data.message);
-        return;
-      }
-      console.error("Error: ", error.message);
-      setError("Something went wrong.");
+      return error;
     }
   };
 

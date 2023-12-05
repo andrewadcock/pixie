@@ -14,24 +14,32 @@ function Email() {
   const [message, setMessage] = useState<string>("");
   const [emailSent, setEmailSent] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  console.log("emailRef", emailRef?.current?.value || "");
   const handlePasswordReset = async (e: React.FormEvent) => {
     const body = {
       email: emailRef.current?.value || "",
     };
 
-    let response;
+    let data;
 
     if (emailRef.current?.value) {
-      response = await userCtx.forgotPasswordSendResetEmail(body);
-      console.log("response", response);
-    }
+      try {
+        data = await userCtx.forgotPasswordSendResetEmail(body);
 
-    if (response) {
-      setEmailSent(true);
-      setError("");
-    } else {
-      setError("Please enter a valid email address");
+        if (data?.name === "AxiosError") {
+          setError(
+            data?.response?.data?.email
+              ? data.response.data.email[0]
+              : "Please enter a valid email address"
+          );
+        } else {
+          setError("");
+          setEmailSent(true);
+        }
+      } catch (error: any) {
+        console.error("Error: ", error);
+        setEmailSent(false);
+        return error;
+      }
     }
   };
 
