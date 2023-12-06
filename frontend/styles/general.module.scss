@@ -1,0 +1,13 @@
+@import "variables";
+
+.message {
+  padding: 1.2rem;
+  //background: #539045;
+  background: #aa00aa;
+  color: $color-white;
+
+  &.error {
+    background: $color-red;
+    color: black
+  }
+}

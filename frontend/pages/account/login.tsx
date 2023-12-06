@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import UserContext from "@/context/authenticationContext";
+import classesGeneral from "../../styles/general.module.scss";
 
 function Login() {
   const userCtx = useContext(UserContext);
@@ -16,10 +17,17 @@ function Login() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    userCtx.login({ username, password });
+
+    const response = await userCtx.login({ username, password });
+
+    // @ts-ignore
+    if (response && response?.data === "credentialError") {
+      setError("Username and/or password are incorrect");
+    }
   };
 
   const handleLoginViaEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -31,6 +39,11 @@ function Login() {
   return (
     <div>
       <h3>Login</h3>
+      {error && (
+        <div className={`${classesGeneral.message} ${classesGeneral.error}`}>
+          {error}
+        </div>
+      )}
       <div>
         <FormControl tabIndex={0} onKeyUp={handleLoginViaEnter}>
           <TextField

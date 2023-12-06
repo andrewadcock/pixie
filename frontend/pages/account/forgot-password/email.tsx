@@ -19,11 +19,9 @@ function Email() {
       email: emailRef.current?.value || "",
     };
 
-    let data;
-
     if (emailRef.current?.value) {
       try {
-        data = await userCtx.forgotPasswordSendResetEmail(body);
+        const data = await userCtx.forgotPasswordSendResetEmail(body);
 
         if (data?.name === "AxiosError") {
           setError(

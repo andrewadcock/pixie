@@ -10,7 +10,7 @@ import {
 import Link from "next/link";
 import UserContext from "@/context/authenticationContext";
 import { useRouter } from "next/router";
-
+import classesGeneral from "../../../styles/general.module.scss";
 /**
  * User enters password for email flow password reset.
  *
@@ -24,17 +24,22 @@ function Confirm() {
 
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+  const [passwordUpdated, setPasswordUpdated] = useState<boolean>(false);
 
   const handlePasswordReset = async (e: React.FormEvent) => {
     if (!password || !token || !email) {
       let errorType = "Invalid Password";
       if (!token) {
         errorType = "Invalid Token";
+        setError(true);
       }
       if (!email) {
         errorType = "Invalid Email";
+        setError(true);
       }
+
       setMessage(`There has been an error: [${errorType}]. Please try again.`);
       return;
     }
@@ -46,9 +51,22 @@ function Confirm() {
       email: Array.isArray(email) ? email[0] : email,
     };
 
-    const response = await userCtx.forgotPasswordSendResetEmail(body);
-    if (response) {
-      setMessage("Password Updated:" + response);
+    const data = await userCtx.updateUserPasswordEmail(body);
+    if (data) {
+      if (data?.name === "AxiosError") {
+        setMessage(
+          data?.data?.response?.data?.email
+            ? data.data.response.data.email[0]
+            : "Please enter a valid email address"
+        );
+        setError(true);
+      } else {
+        setMessage("");
+        setError(false);
+      }
+      setMessage("Password Updated:" + data);
+      setPasswordUpdated(true);
+      setError(false);
     }
   };
 
@@ -57,19 +75,26 @@ function Confirm() {
       handlePasswordReset(e);
     }
   };
-
   return (
     <div>
       <h3>Reset Password</h3>
       <p>Enter your new password</p>
-      {!token ? (
+      {passwordUpdated ? (
         <>
-          We&apos;re sorry. There seems to be a problem. Please try to reset
-          your password again. <a href={"/forgot-password"}>Forgot Password</a>
+          <h2>Password Reset </h2>
+          <Link href={"/account/login/"}>Log In</Link> |{" "}
         </>
       ) : (
         <>
-          {message ? <>message</> : null}
+          {message ? (
+            <div
+              className={`${classesGeneral.message} ${
+                error ? classesGeneral.error : ""
+              }`}
+            >
+              {message}
+            </div>
+          ) : null}
           <div>
             <FormControl tabIndex={0} onKeyUp={handleResetViaEnter}>
               <TextField

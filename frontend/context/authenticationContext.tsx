@@ -20,6 +20,17 @@ export interface IUser {
   username: string;
   password?: string;
 }
+interface IForgotPasswordValidityProps {
+  email: string;
+  token: string;
+  password: string;
+}
+
+interface IForgotPasswordValidityProps {
+  email: string;
+  token: string;
+  password: string;
+}
 
 interface UserContext {
   user: IUser;
@@ -31,6 +42,7 @@ interface UserContext {
   isUserLoggedIn: () => void;
   updateUserProfile: (props: IUser) => any;
   updateUserPassword: (props: PasswordValidityProps) => void;
+  updateUserPasswordEmail: (props: IForgotPasswordValidityProps) => any;
   forgotPasswordSendResetEmail: (props: IForgotPasswordSendResetEmail) => any;
 }
 
@@ -67,6 +79,7 @@ const defaultUserContext = {
   isUserLoggedIn: () => new Promise(() => {}),
   updateUserProfile: () => new Promise(() => {}),
   updateUserPassword: () => new Promise(() => {}),
+  updateUserPasswordEmail: () => new Promise(() => {}),
   forgotPasswordSendResetEmail: () => new Promise(() => {}),
 };
 
@@ -115,6 +128,10 @@ export const UserProvider = (props: UserProviderProps) => {
         body,
         config
       );
+
+      if (accessResponse?.data === "credentialError") {
+        return accessResponse;
+      }
 
       if (accessResponse && accessResponse.user) {
         setUser(accessResponse.user[0]);
@@ -259,6 +276,41 @@ export const UserProvider = (props: UserProviderProps) => {
   };
 
   /**
+   * Uses update password flow for logged OUT user
+   *
+   * @param props
+   */
+  const updateUserPasswordEmail = async (
+    props: IForgotPasswordValidityProps
+  ) => {
+    const body = {
+      password: props.password,
+      email: props.email,
+      token: props.token,
+    };
+
+    try {
+      const data = await axios.post(
+        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/update-password`,
+        body,
+        config
+      );
+
+      return data;
+
+      // Send back update report
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        setError(error.response.data.message);
+        return error;
+      }
+      console.error("Error: ", error.message);
+      setError("Something went wrong.");
+      return error;
+    }
+  };
+
+  /**
    * Using the Forgot Password flow for logged-out user
    *
    * Triggers email send with forgot password link to email param
@@ -297,6 +349,7 @@ export const UserProvider = (props: UserProviderProps) => {
         isUserLoggedIn,
         updateUserProfile,
         updateUserPassword,
+        updateUserPasswordEmail,
         forgotPasswordSendResetEmail,
       }}
     >
