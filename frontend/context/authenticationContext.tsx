@@ -56,11 +56,6 @@ interface IForgotPasswordSendResetEmail {
   token?: string;
 }
 
-interface IForgotPasswordUpdatePassword {
-  email: string;
-  token: string;
-}
-
 const defaultUser = {
   first_name: "",
   last_name: "",
@@ -83,7 +78,6 @@ const defaultUserContext = {
   forgotPasswordSendResetEmail: () => new Promise(() => {}),
 };
 
-// const UserContext = createContext(defaultUserContext);
 const UserContext = createContext<UserContext>(defaultUserContext);
 
 export const UserProvider = (props: UserProviderProps) => {
@@ -288,14 +282,12 @@ export const UserProvider = (props: UserProviderProps) => {
       email: props.email,
       token: props.token,
     };
-
     try {
       const data = await axios.post(
-        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/update-password`,
+        `${process.env.NEXT_PUBLIC_LOCAL_URL}api/forgot-password-confirm`,
         body,
         config
       );
-
       return data;
 
       // Send back update report

@@ -13,6 +13,8 @@ urlpatterns = [
     path('register/', RegisterUserView.as_view(), name='register'),
     path('update-profile/', UserRetrieveUpdateAPIView.as_view(), name='updateProfile'),
     path('update-password/', ChangePasswordView.as_view(), name="updatePassword"),
+    path('password-reset/',
+         include('django_rest_passwordreset.urls', namespace='password_reset')),
     # Sends password reset email containing token
     re_path('forgot-password-send-reset-email/',
             include('django_rest_passwordreset.urls',
