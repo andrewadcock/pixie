@@ -145,6 +145,10 @@ export const UserProvider = (props: UserProviderProps) => {
     }
   };
 
+  /**
+   * Register new user, add to DB, and log user in
+   * @param props
+   */
   const register = async (props: IUser) => {
     const body = {
       username: props.username,
@@ -161,7 +165,7 @@ export const UserProvider = (props: UserProviderProps) => {
         config
       );
 
-      login({
+      await login({
         username: props.username,
         password: props.password || "",
       });
