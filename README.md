@@ -80,3 +80,9 @@ To make migrations enter the backend containers bash interface.
    2. example: `docker exec -it pixie_backend_1 /bin/bash`
 3. Run migration
    1. `python manage.py makemigrations && python manage.py migrate`
+
+
+### API Information
+Uses the Movie of the Night API for program details and availability
+https://www.movieofthenight.com/about/api
+https://rapidapi.com/movie-of-the-night-movie-of-the-night-default/api/streaming-availability/
