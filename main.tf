@@ -8,7 +8,7 @@ resource "google_cloudbuild_trigger" "react-trigger" {
   ignored_files = [".gitignore"]
 //Configuration section
  // build config file
- filename = "<path to cloudbuild.yaml file>"
+ filename = "./cloudbuild.yaml"
  // build config inline yaml
  #build {
  #    step {
@@ -20,8 +20,8 @@ resource "google_cloudbuild_trigger" "react-trigger" {
  #    ...
  #  }
   //Advanced section
-  substitutions = {
-    <key1>= "<value1>"
-    <key2> = "<value2>"
-  }
+#   substitutions = {
+#     <key1>= "<value1>"
+#     <key2> = "<value2>"
+#   }
 }
