@@ -41,6 +41,8 @@ steps:
       - us-central1
       - "--allow-unauthenticated"
     entrypoint: gcloud
+options:
+  logging: CLOUD_LOGGING_ONLY
 substitutions:
   _PROJECT_NUMBER: "231184914133"
   _GITLAB_IP: 34.139.157.79
