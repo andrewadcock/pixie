@@ -143,7 +143,12 @@ REST_FRAMEWORK = {
 
 # Env vars should be comma delimated
 # CORS_ALLOWED_ORIGINS = os.environ.get('ALLOWED_HOSTS').split(',')
-CORS_ALLOWED_ORIGINS = '*'
+# CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = ['https://*']
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+ALLOWED_HOSTS = ['*']
 
 ANYMAIL = {
     "MAILGUN_API_KEY": "key-4e1a40275a3cfd79f232d52d04deab59",
