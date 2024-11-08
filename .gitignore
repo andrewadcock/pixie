@@ -56,3 +56,5 @@ yarn-error.log*
 
 
 /data
+/db/secrets
+/backend/static/

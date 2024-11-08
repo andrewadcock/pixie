@@ -6,40 +6,68 @@ Pixie is an online list creator and picker service. By default, it tracks movies
 
 1. Clone repo
 2. Create /backend/.env
-   1. Sample locahost contents below
+   1. Sample contents below
       1. Change `SECRET_KEY`
 3. Create /db/.env
-   1. Sample localhost contents below
-4. Create /frontend/.env
-   1. Sample file context below
-5. Run `docker-compose up`
+   1. Sample contents below
+4. Create /db/secrets/cloudsql.json
+   1. Sample contents below
+5. Create /frontend/.env
+   1. Sample contents below
+6. Run `docker-compose up`
    1. View backend at http://localhost:8080/admin
-6. In New Terminal: `cd /frontend/`
-7. Run command `npm install`
-8. Run command `npm dev:ts`
+7. In New Terminal: `cd /frontend/`
+8. Run command `npm install`
+9. Run command `npm dev:ts`
    1. View frontend at http://localhost:3000
 
 ### /backend/.env
 
 ```dotenv
 DEBUG=True
-SECRET_KEY='sdflkjfartyBlartFastIthinkIsHowItsspelled'
+SECRET_KEY='xxxREPLACE_MExxx'
 ALLOWED_HOSTS=*
 
-# postgres
-DATABASE_URL=postgres://
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_DB=postgres
+# postgres for cloud-proxy
+# POSTGRES_USER=''
+# POSTGRES_PASSWORD=''
+# POSTGRES_DB='pixie-django'
+# POSTGRES_HOST='cloudsql-proxy'
+
+
+
+# postgres for docker postgres
+POSTGRES_USER='postgres'
+POSTGRES_PASSWORD='postgres'
+POSTGRES_DB='postgres'
+POSTGRES_HOST='postgres'
 ```
 
 ### /db/.env
 
 ```dotenv
-DATABASE_URL=postgres://
+POSTGRES_HOST=postgres://
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=postgres
+```
+
+### /db/secrets/cloudsql.json
+
+```dotenv
+{
+"type": "service_account",
+"project_id": "pixie-438313",
+"private_key_id": "{PRIVATE KEY ID}",
+"private_key": "{PRIVATE KEY}",
+"client_email": "pixie-sql@pixie-438313.iam.gserviceaccount.com",
+"client_id": "100964363540086579360",
+"auth_uri": "https://accounts.google.com/o/oauth2/auth",
+"token_uri": "https://oauth2.googleapis.com/token",
+"auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+"client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/pixie-sql%40pixie-438313.iam.gserviceaccount.com",
+"universe_domain": "googleapis.com"
+}
 ```
 
 ### /fronted/.env

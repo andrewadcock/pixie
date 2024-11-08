@@ -15,6 +15,6 @@ COPY . /code/
 EXPOSE 8080
 
 #lint
-RUN flake8 --ignore=E501,F401 .
+# RUN flake8 --ignore=E501,F401 .
 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]    

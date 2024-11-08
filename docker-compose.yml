@@ -1,23 +1,38 @@
 version: "3.9"
 
 services:
-  db:
-    container_name: postgres_container
+  postgres:
+    container_name: postgres
     image: postgres
     volumes:
       - ./data/:/var/lib/postgresql/data
+    networks:
+      - pixie
     env_file: ./db/.env
     ports:
       - "5432:5432"
-  pgadmin:
-    container_name: pgadmin4_container
+  pgadmin4:
+    container_name: pgadmin4
     image: dpage/pgadmin4
     restart: always
     ports:
       - "5050:80"
+    networks:
+      - pixie
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: postgres
+  # cloudsql-proxy:
+  #   container_name: cloudsql-proxy
+  #   image: gcr.io/cloudsql-docker/gce-proxy
+  #   command: /cloud_sql_proxy --dir=/cloudsql -instances=pixie-438313:us-central1:pixie=tcp:0.0.0.0:5432 -credential_file=/db/secrets/cloudsql.json
+  #   ports:
+  #     - 5432:5432
+  #   volumes:
+  #     - ./db/secrets/cloudsql.json:/db/secrets/cloudsql.json
+  #   networks:
+  #     - pixie
+  #   restart: always
   backend:
     build:
       context: ./backend
@@ -26,12 +41,18 @@ services:
              python manage.py runserver 0.0.0.0:8080"
     volumes:
       - ./backend:/code
+    networks:
+      - pixie
     env_file: ./backend/.env
     ports:
       - "8080:8080"
     depends_on:
-      - db
-      - pgadmin
+      # - cloudsql-proxy
+      - postgres
 volumes:
   pixie-data:
   pixie-backend-code:
+networks:
+  pixie:
+    name: pixie
+    driver: bridge
