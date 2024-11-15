@@ -81,6 +81,15 @@ NEXT_PUBLIC_IS_HTTPS = true
 
 ## Notes & Reminders
 
+### Toggling Between Local Postgres and CloudSQL Proxy
+
+1. Update `/backend/.env`
+   1. Set `USE_CLOUD_PROXY='true'` to use cloudSQL
+2. Update `/docker-compose.yml`
+   1. Comment out service `postgres` to use CloudSQL
+   2. Uncomment service `cloudsql-proxy`
+   3. Swap `depends_on` for `backend` service
+
 ### Pre-commit
 
 This project uses pre-commit ([https://github.com/pre-commit/pre-commit](https://github.com/pre-commit/pre-commit)).
@@ -97,7 +106,6 @@ issue.
 ### Adding PIP requirements
 
 Add all required packages to `/backend/requirements.txt`. Remember to restart docker for installation.
-`
 
 ### Run Flake 8 Locally
 

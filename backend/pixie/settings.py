@@ -81,14 +81,16 @@ WSGI_APPLICATION = 'pixie.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+IS_CLOUD_PROXY = True if os.environ.get('USE_CLOUD_PROXY') == 'true' else False
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_NAME'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('POSTGRES_HOST'),
-        'PORT': 5432,
+        'NAME': os.environ.get('CLOUDSQL_NAME') if IS_CLOUD_PROXY else os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('CLOUDSQL_USER') if IS_CLOUD_PROXY else os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('CLOUDSQL_PASSWORD') if IS_CLOUD_PROXY else os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('CLOUDSQL_HOST') if IS_CLOUD_PROXY else os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('CLOUDSQL_PORT') if IS_CLOUD_PROXY else os.environ.get('POSTGRES_PORT'),
     }
 }
 
