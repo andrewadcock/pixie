@@ -18,7 +18,7 @@ function Logout() {
   };
   useEffect(() => {
     logout().then();
-  }, []);
+  }, [logout]);
 
   return (
     <div>

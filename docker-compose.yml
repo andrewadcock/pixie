@@ -3,7 +3,9 @@ version: "3.9"
 services:
   postgres:
     container_name: postgres
-    image: postgres
+    restart: always
+    shm_size: 128mb
+    image: postgres:17.2
     volumes:
       - ./data/:/var/lib/postgresql/data
     networks:
@@ -33,6 +35,8 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: postgres
+    depends_on:
+      - postgres
   backend:
     build:
       context: ./backend
@@ -49,6 +53,18 @@ services:
     depends_on:
       # - cloudsql-proxy
       - postgres
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend:/code
+    ports:
+      - "3000:3000"
+    networks:
+      - pixie
+    env_file: ./frontend/.env
+    depends_on:
+      - backend
 volumes:
   pixie-data:
   pixie-backend-code:

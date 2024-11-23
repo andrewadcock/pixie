@@ -2,7 +2,7 @@
 
 Pixie is an online list creator and picker service. By default, it tracks movies with genre(s).
 
-## Setup
+## 1. Setup
 
 1. Clone repo
 2. Create /backend/.env
@@ -16,10 +16,14 @@ Pixie is an online list creator and picker service. By default, it tracks movies
    1. Sample contents below
 6. Run `docker-compose up`
    1. View backend at http://localhost:8080/admin
-7. In New Terminal: `cd /frontend/`
-8. Run command `npm install`
-9. Run command `npm dev:ts`
-   1. View frontend at http://localhost:3000
+7. Create backend user
+   1. Run `docker ps` to get backend container name (e.g. pixie-backend-1)
+   2. Create super user
+      1. Run `docker exec -it [CONTAINER NAME]> python manage.py createsuperuser` (e.g. `docker exec -it pixie-backend-1 python manage.py createsuperuser`)
+8. In New Terminal: `cd /frontend/`
+9. Run command `npm install`
+10. Run command `npm dev:ts`
+11. View frontend at http://localhost:3000
 
 ### /backend/.env
 
@@ -79,7 +83,7 @@ NEXT_PUBLIC_API_VERSION = 'v1'
 NEXT_PUBLIC_IS_HTTPS = true
 ```
 
-## Notes & Reminders
+## 2. Notes & Reminders
 
 ### Toggling Between Local Postgres and CloudSQL Proxy
 

@@ -15,7 +15,7 @@ function Layout(props: Props) {
 
   useEffect(() => {
     userCtx.isUserLoggedIn();
-  }, []);
+  }, [userCtx]);
 
   return (
     <>
